@@ -2,7 +2,7 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-    <title>App Name a Coding Challange</title>
+    <title>Celsius to Fahrenheit a Coding Challange</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -26,17 +26,16 @@
 
     <main class="mb-5">
         <div class="container mt-5">
-            <h1>App Name</h1>
+            <h1>Celsius to Fahrenheit</h1>
             <p class="lead">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora doloribus numquam nesciunt maiores
-                repellendus dolorum. Esse voluptatem odit est iusto alias, vel quaerat laboriosam nobis.
+                The application allows users to easily convert temperatures between Celsius and Fahrenheit
             </p>
             <ul class="checklist">
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
-                <li><i class="bi bi-check2-square"></i>Lorem ipsum dolor sit amet.</li>
+                <li><i class="bi bi-check2-square"></i>Modular Functions</li>
+                <li><i class="bi bi-check2-square"></i>Input Validation</li>
+                <li><i class="bi bi-check2-square"></i>Clear Error Handling</li>
+                <li><i class="bi bi-check2-square"></i>Responsive UI Updates</li>
+                <li><i class="bi bi-check2-square"></i>Consistent Variable Naming</li>
             </ul>
         </div>
         <div class="container mt-5">
@@ -47,25 +46,19 @@
                         <!-- Input -->
                         <form>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="number-input" value="1">
-                                <label for="number-input">Number Input</label>
+                                <input type="number" class="form-control" id="temperatureDegrees-input" value="100">
+                                <label for="temperatureDegrees-input" id="temperatureDegrees-label">Fahrenheit</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="string-Input" value="Example text">
-                                <label for="string-Input">String Input</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="select-input">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-select" id="opertation-input">
+                                    <option value="toCelsius" selected>Celsius</option>
+                                    <option value="toFahrenheit">Fahrenheit</option>
                                 </select>
-                                <label for="floatingSelect">Works with selects</label>
+                                <label for="opertation-input">Convert to</label>
                             </div>
                             <div class="text-end">
-                                <button class="btn btn-outline-primary btn-lg" onclick="getValues()"
-                                    type="button">Controller Function Trigger</button>
+                                <button class="btn btn-outline-primary btn-lg" onclick="handleConversion()"
+                                    type="button">Show Temperature</button>
                             </div>
                         </form>
                     </div>
@@ -73,11 +66,11 @@
                 <div class="col-sm-8 order-first order-sm-0">
                     <p class="lead">Instructions</p>
                     <ol>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
+                        <li>Enter the temperature value in the provided input field.</li>
+                        <li>Select the desired conversion operation: 'Celsius' or 'Fahrenheit'.</li>
+                        <li>Click the 'Show Temperature' button to perform the temperature conversion.</li>
+                        <li>Observe the converted temperature result displayed below.</li>
+                        <li>Repeat as needed for additional conversions.</li>
                     </ol>
                 </div>
                 <div class="col-12">
@@ -96,34 +89,78 @@
             <div class="card bg-body-secondary mt-4 mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <button onclick="expandThumnail('firstFunctionThumnail', 'firstFunctionContent')" type="button"
-                            data-bs-toggle="modal" data-bs-target="#firstFunctionModal" id="firstFunctionThumnail"
-                            class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
+                        <button onclick="expandThumnail('handleConversionThumnail', 'handleConversionContent')"
+                            type="button" data-bs-toggle="modal" data-bs-target="#handleConversionModal"
+                            id="handleConversionThumnail" class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
                             <pre class="line-numbers rounded">
-                                <code class="language-JS"></code>
+                                <code class="language-JS">
+                                    // Controller
+function handleConversion() {
+
+    // Get input from DOM
+    let temperatureDegrees = document.getElementById('temperatureDegrees-input').value;
+    let operation = document.getElementById('opertation-input').value;
+
+    // Process inputs
+    temperatureDegrees = parseFloat(temperatureDegrees);
+
+    // Validate inputs
+    if (Number.isNaN(temperatureDegrees)) {
+        // Error message for invalid temperature input
+        Swal.fire({
+            icon: "error",
+            title: "Invalid Input",
+            text: "Please enter a valid number for temperature.",
+        });
+    }
+
+    if (operation != 'toCelsius' && operation != 'toFahrenheit') {
+        // Error message for invalid operation
+        Swal.fire({
+            icon: "error",
+            title: "Invalid Operation",
+            text: "Please choose 'Celsius' or 'Fahrenheit'.",
+        });
+    }
+
+    // Perfrom operation
+    let convertedTempature = 0.00;
+
+    if (operation == 'toCelsius') {
+        convertedTempature = fahrenheitToCelsius(temperatureDegrees);
+
+    } else if (operation == 'toFahrenheit') {
+        convertedTempature = celsiusToFahrenheit(temperatureDegrees);
+    }
+
+    // Display tempature
+    displayTempature(convertedTempature, operation);
+}
+                                </code>
                             </pre>
                         </button>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100">
-                            <h5 class="card-title">Controller (firstFunction)</h5>
+                            <h5 class="card-title">Controller (handleConversion)</h5>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni quidem assumenda libero,
-                                cum mollitia animi fugit porro aut amet dignissimos, sed quia similique dolor vitae?
-                                Sint eum dolore atque voluptate!
+                                Manages the temperature conversion process, taking user inputs, validating them,
+                                performing the conversion, and updating
+                                the displayed result.
                             </p>
                             <!-- Modal -->
-                            <div class="modal fade modal-lg" id="firstFunctionModal" tabindex="-1"
-                                aria-labelledby="firstFunctionModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-lg" id="handleConversionModal" tabindex="-1"
+                                aria-labelledby="handleConversionModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="firstFunctionModalLabel">firstFunction()
+                                            <h1 class="modal-title fs-5" id="handleConversionModalLabel">
+                                                handleConversion()
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div id="firstFunctionContent" class="modal-body fullCode">
+                                        <div id="handleConversionContent" class="modal-body fullCode">
                                             <pre class="line-numbers"></pre>
                                         </div>
                                         <div class="modal-footer">
@@ -141,35 +178,46 @@
             <div class="card bg-body-secondary mt-4 mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <button onclick="expandThumnail('secondFunctionThumnail', 'secondFunctionContent')"
-                            type="button" data-bs-toggle="modal" data-bs-target="#secondFunctionModal"
-                            id="secondFunctionThumnail" class="p-2 w-100 thumbnailCode hover-zoom  bg-body-secondary">
+                        <button onclick="expandThumnail('celsiusToFahrenheitThumnail', 'celsiusToFahrenheitContent')"
+                            type="button" data-bs-toggle="modal" data-bs-target="#celsiusToFahrenheitModal"
+                            id="celsiusToFahrenheitThumnail"
+                            class="p-2 w-100 thumbnailCode hover-zoom  bg-body-secondary">
                             <pre class="line-numbers rounded">
-                                <code class="language-JS"></code>
+                                <code class="language-JS">
+                                    // Logic
+function celsiusToFahrenheit(celsius) {
+    /*
+        Calculate fahrenheit using the formula:
+        °F = (°C × 9/5) + 32
+        where °F is Fahrenheit, and °C is Celsius
+    */
+    let fahrenheit = ((celsius * (9 / 5)) + 32);
+    return fahrenheit;
+}
+                                </code>
                             </pre>
                         </button>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100">
-                            <h5 class="card-title">Logic (secondFunction)</h5>
+                            <h5 class="card-title">Logic (celsiusToFahrenheit)</h5>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, fugit, quasi
-                                mollitia voluptate culpa quibusdam delectus quam nemo magnam error saepe similique
-                                reprehenderit totam a architecto aperiam. Magnam, eaque voluptate!
-                            </p>
+                                Converts a temperature value from Celsius to Fahrenheit, contributing the core logic for
+                                one direction of the
+                                conversion. </p>
                             <!-- Modal -->
-                            <div class="modal fade modal-lg" id="secondFunctionModal" tabindex="-1"
-                                aria-labelledby="secondFunctionModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-lg" id="celsiusToFahrenheitModal" tabindex="-1"
+                                aria-labelledby="celsiusToFahrenheitModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="secondFunctionModalLabel">
-                                                secondFunction()
+                                            <h1 class="modal-title fs-5" id="celsiusToFahrenheitModalLabel">
+                                                celsiusToFahrenheit()
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div id="secondFunctionContent" class="modal-body fullCode">
+                                        <div id="celsiusToFahrenheitContent" class="modal-body fullCode">
                                             <pre class="line-numbers"></pre>
                                         </div>
                                         <div class="modal-footer">
@@ -187,34 +235,179 @@
             <div class="card bg-body-secondary mt-4 mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <button onclick="expandThumnail('thirdFunctionThumnail', 'thirdFunctionContent')" type="button"
-                            data-bs-toggle="modal" data-bs-target="#thirdFunctionModal" id="thirdFunctionThumnail"
-                            class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
+                        <button onclick="expandThumnail('fahrenheitToCelsiusThumnail', 'fahrenheitToCelsiusContent')"
+                            type="button" data-bs-toggle="modal" data-bs-target="#fahrenheitToCelsiusModal"
+                            id="fahrenheitToCelsiusThumnail"
+                            class="p-2 w-100 thumbnailCode hover-zoom  bg-body-secondary">
                             <pre class="line-numbers rounded">
-                                <code class="language-JS"></code>
+                                            <code class="language-JS">
+                                                // Logic
+    function fahrenheitToCelsius(fahrenheit) {
+        /*
+            Calculate Celsius using the formula:
+            °C = (°F − 32) × 5/9
+            where °C is Celsius, and °F is Fahrenheit
+        */
+        let celsius = ((fahrenheit - 32) * (5 / 9));
+        return celsius;
+    }
+                                            </code>
+                                        </pre>
+                        </button>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body h-100">
+                            <h5 class="card-title">Logic (fahrenheitToCelsius)</h5>
+                            <p class="card-text">
+                                Converts a temperature value from Fahrenheit to Celsius, contributing the core logic for
+                                the opposite direction of the
+                                conversion
+                            </p>
+                            <!-- Modal -->
+                            <div class="modal fade modal-lg" id="fahrenheitToCelsiusModal" tabindex="-1"
+                                aria-labelledby="fahrenheitToCelsiusModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="fahrenheitToCelsiusModalLabel">
+                                                fahrenheitToCelsius()
+                                            </h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div id="fahrenheitToCelsiusContent" class="modal-body fullCode">
+                                            <pre class="line-numbers"></pre>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-body-secondary mt-4 mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <button onclick="expandThumnail('displayTempatureThumnail', 'displayTempatureContent')"
+                            type="button" data-bs-toggle="modal" data-bs-target="#displayTempatureModal"
+                            id="displayTempatureThumnail" class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
+                            <pre class="line-numbers rounded">
+                                <code class="language-JS">
+                                    // View
+function displayTempature(degrees, type) {
+
+    // Format tempature to 2 decimal numbers
+    degrees = parseFloat(degrees).toFixed(2);
+
+    // Format type tempature
+    if (type == 'toCelsius') {
+        type = 'Celsius';
+
+    } else if (type == 'toFahrenheit') {
+        type = 'Fahrenheit';
+    }
+
+    // Format as HTML
+    let results = `&lt;span class="text-muted">${type}&lt;/span>&lt;br/>
+                   &lt;h1 class="text-primary">${degrees}&lt;/h1>`;
+
+    // Display on document
+    document.getElementById('results').innerHTML = results;
+    document.getElementById('resultsContainer').classList.remove('d-none');
+}
+                                </code>
                             </pre>
                         </button>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-100">
-                            <h5 class="card-title">View (thirdFunction)</h5>
+                            <h5 class="card-title">View (displayTempature)</h5>
                             <p class="card-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia rerum consequatur ad
-                                reiciendis! Odio assumenda tempore consequuntur autem quia. Laboriosam voluptatem id
-                                sunt ad esse asperiores maiores harum a repellat?
-                            </p>
+                                Formats and visually presents the converted temperature result, making it easy for users
+                                to understand and interpret. </p>
                             <!-- Modal -->
-                            <div class="modal fade modal-lg" id="thirdFunctionModal" tabindex="-1"
-                                aria-labelledby="thirdFunctionModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-lg" id="displayTempatureModal" tabindex="-1"
+                                aria-labelledby="displayTempatureModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="thirdFunctionModalLabel">thirdFunction()
+                                            <h1 class="modal-title fs-5" id="displayTempatureModalLabel">
+                                                displayTempature()
                                             </h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div id="thirdFunctionContent" class="modal-body fullCode">
+                                        <div id="displayTempatureContent" class="modal-body fullCode">
+                                            <pre class="line-numbers"></pre>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-body-secondary mt-4 mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <button onclick="expandThumnail('updateLabelThumnail', 'updateLabelContent')" type="button"
+                            data-bs-toggle="modal" data-bs-target="#updateLabelModal" id="updateLabelThumnail"
+                            class="p-2 w-100 thumbnailCode hover-zoom bg-body-secondary">
+                            <pre class="line-numbers rounded">
+                                <code class="language-JS">
+                                    // View - Update Label 
+    // Get the select element by its ID
+    var selectElement = document.getElementById("opertation-input");
+
+    // Add event listener for the 'change' event
+    selectElement.addEventListener("change", function () {
+
+        // This function will be executed when the selected option changes
+
+        // Get Selected option
+        selectedOperation = selectElement.value;
+
+        // Change label
+        if (selectedOperation == 'toCelsius') {
+            document.getElementById('temperatureDegrees-label').innerHTML = 'Fahrenheit';
+
+        } else if (selectedOperation == 'toFahrenheit') {
+            document.getElementById('temperatureDegrees-label').innerHTML = 'Celsius';
+        }
+    });
+                                </code>
+                            </pre>
+                        </button>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body h-100">
+                            <h5 class="card-title">View (updateLabel)</h5>
+                            <p class="card-text">
+                                Dynamically updates the label for the temperature input field based on the selected
+                                conversion operation, enhancing user
+                                guidance during interaction. </p>
+                            <!-- Modal -->
+                            <div class="modal fade modal-lg" id="updateLabelModal" tabindex="-1"
+                                aria-labelledby="updateLabelModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="updateLabelModalLabel">Update Label
+                                            </h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div id="updateLabelContent" class="modal-body fullCode">
                                             <pre class="line-numbers"></pre>
                                         </div>
                                         <div class="modal-footer">
